@@ -8,8 +8,8 @@ client.once('ready', () => {
 });
 
 client.on('messageCreate', (message) => {
-    if (message.content == 'ping') {
-        message.reply('pong');
+    if (message.content === 'ping') {
+        message.reply('pong')
     }
 })
 client.login(token);
