@@ -1,0 +1,1 @@
+A small bot to bring anti-moderation in your server
