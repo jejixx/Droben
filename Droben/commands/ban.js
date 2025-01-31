@@ -1,35 +1,35 @@
+const { PermissionsBitField } = require('discord.js');
+
 module.exports = {
     name: 'ban',
-    description: 'ban!',
+    description: 'Ban a user from the server.',
     async execute(message, args) {
-        // Check if the message author has the 'BAN_MEMBERS' permission
-        if (!message.member.permissions.has('BanMembers')) {
-            return message.reply('You do not have permission to ban members.');
-        }
+        console.log('Ban command executed');
 
-        // Check if the bot has the 'BAN_MEMBERS' permission
-        if (!message.guild.members.me.permissions.has('BanMembers')) {
+        if (!message.guild.members.me.permissions.has(PermissionsBitField.Flags.BanMembers)) {
+            console.log('Bot does not have permission to ban members');
             return message.reply('I do not have permission to ban members.');
         }
 
-        // Get the member to ban
-        const member = message.mentions.members.first();
-        if (!member) {
-            return message.reply('Please mention a valid member to ban.');
+        if (!message.member.permissions.has(PermissionsBitField.Flags.BanMembers)) {
+            console.log('User does not have permission to ban members');
+            return message.reply('You do not have permission to ban members.');
         }
 
-        // Check if the member is bannable
-        if (!member.bannable) {
-            return message.reply('I cannot ban this user.');
+        const userId = args[0];
+        if (!userId) {
+            console.log('No user ID provided');
+            return message.reply('You need to provide a user ID to ban.');
         }
 
-        // Ban the member
         try {
-            await member.ban({ reason: args.slice(1).join(' ') || 'No reason provided' });
-            message.reply(`${member.user.tag} has been banned.`);
+            const user = await message.guild.members.ban(userId, { reason: args.slice(1).join(' ') || 'No reason provided' });
+            console.log(`User ${user.tag} has been banned`);
+            message.reply(`${user.tag} has been banned.`);
         } catch (error) {
+            console.log('Failed to ban the member');
+            message.reply('I was unable to ban this member.');
             console.error(error);
-            message.reply('There was an error trying to ban this member.');
         }
     },
 };
