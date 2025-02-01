@@ -8,8 +8,9 @@ module.exports = {
         // Ignore messages from bots
         if (message.author.bot) return;
 
-        // Check if the message contains the substring "feur"
-        if (message.content.trim().toLowerCase() === 'feur') {
+        // Check if the message contains the word "feur" (case-insensitive)
+        const regex = /\bfeur\b/i;
+        if (regex.test(message.content)) {
             console.log('Feur detected'); // Debug log
             // Reply with squidward gif
             message.reply('https://tenor.com/view/brain-trash-spongebob-squidward-dumb-gif-17233216');
