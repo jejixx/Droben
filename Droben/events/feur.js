@@ -9,7 +9,7 @@ module.exports = {
         if (message.author.bot) return;
 
         // Check if the message contains the substring "feur"
-        if (message.content.toLowerCase().includes('feur')) {
+        if (message.content.trim().toLowerCase() === 'feur') {
             console.log('Feur detected'); // Debug log
             // Reply with squidward gif
             message.reply('https://tenor.com/view/brain-trash-spongebob-squidward-dumb-gif-17233216');
