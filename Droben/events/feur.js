@@ -3,7 +3,7 @@ const { Events } = require('discord.js');
 module.exports = {
     name: Events.MessageCreate,
     async execute(message) {
-        console.log('Message received:', message.content); // Debug log
+        console.log('Message received:'); // Debug log
 
         // Ignore messages from bots
         if (message.author.bot) return;
