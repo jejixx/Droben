@@ -22,14 +22,17 @@ module.exports = {
             return message.reply('You need to provide a user ID to ban.');
         }
 
+        // Extract user ID from mention
+        const userIdMatch = userId.match(/^<@!?(\d+)>$/);
+        const extractedUserId = userIdMatch ? userIdMatch[1] : userId;
+
         try {
-            const user = await message.guild.members.ban(userId, { reason: args.slice(1).join(' ') || 'No reason provided' });
-            console.log(`User ${user.tag} has been banned`);
-            message.reply(`${user.tag} has been banned.`);
+            await message.guild.members.ban(extractedUserId);
+            console.log(`User ${extractedUserId} banned successfully`);
+            return message.reply(`User ${extractedUserId} has been banned.`);
         } catch (error) {
-            console.log('Failed to ban the member');
-            message.reply('I was unable to ban this member.');
-            console.error(error);
+            console.error(`Failed to ban user ${extractedUserId}:`, error);
+            return message.reply(`Failed to ban user ${extractedUserId}.`);
         }
-    },
+    }
 };
