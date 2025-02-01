@@ -5,8 +5,13 @@ module.exports = {
     description: 'Kick a user from the server.',
     execute(message, args) {
         console.log('Kick command executed');
-        
-        if (!message.member.permissions.has(PermissionsBitField.Flags.KickMembers) && !message.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
+    
+        if (!message.guild.members.me.permissions.has(PermissionsBitField.Flags.KickMembers)) {
+            console.log('Bot does not have permission to kick members');
+            return message.reply('I do not have permission to ban members.');
+        }
+
+        if (!message.member.permissions.has(PermissionsBitField.Flags.KickMembers)) {
             console.log('User does not have permission to kick members');
             return message.reply('You do not have permission to kick members.');
         }
