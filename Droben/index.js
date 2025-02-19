@@ -83,10 +83,23 @@ client.on('interactionCreate', async interaction => {
 });
 
 client.on('messageCreate', message => {
-    if (!message.content.startsWith('!') || message.author.bot) return;
+    if (message.author.bot) return;
 
-    const args = message.content.slice(1).split(/ +/);
-    const commandName = args.shift().toLowerCase();
+    const prefix = '!';
+    const mentionPrefix = `<@${client.user.id}>`;
+
+    let args;
+    let commandName;
+
+    if (message.content.startsWith(prefix)) {
+        args = message.content.slice(prefix.length).trim().split(/ +/);
+        commandName = args.shift().toLowerCase();
+    } else if (message.content.startsWith(mentionPrefix)) {
+        args = message.content.slice(mentionPrefix.length).trim().split(/ +/);
+        commandName = args.shift().toLowerCase();
+    } else {
+        return;
+    }
 
     const command = client.commands.get(commandName);
 
