@@ -31,7 +31,7 @@ GUILD_ID=id_du_serveur_de_test
 |-------------|-------------|
 | `TOKEN`     | Token du bot (onglet **Bot** du portail développeur) |
 | `CLIENT_ID` | ID de l'application (onglet **General Information**) |
-| `GUILD_ID`  | ID du serveur où déployer les commandes en développement |
+| `GUILD_ID`  | ID du serveur pour un déploiement manuel (`npm run deploy`) — optionnel si le bot tourne |
 
 > **Activer les intents** dans le portail :
 > - **Server Members Intent** (nécessaire pour `/kick`)
@@ -46,18 +46,24 @@ GUILD_ID=id_du_serveur_de_test
 
 | Commande         | Description |
 |------------------|-------------|
-| `npm run deploy` | Enregistre les slash commands sur le serveur de dev (`GUILD_ID`) |
+| `npm run deploy` | Déploiement manuel sur un serveur (`GUILD_ID`) |
 | `npm run dev`    | Lance le bot avec **nodemon** (rechargement auto) |
 | `npm start`      | Lance le bot en production |
+
+## Déploiement automatique des slash commands
+
+Le bot enregistre les commandes slash **automatiquement** :
+
+- **Au démarrage** — synchronisation sur tous les serveurs où DroBen est présent
+- **À l'invitation** — dès que le bot rejoint un nouveau serveur (`guildCreate`)
+
+Plus besoin de lancer `npm run deploy` à chaque nouvelle invitation (sauf déploiement manuel ciblé).
 
 ## Démarrage rapide
 
 ```bash
-# 1. Remplir .env (TOKEN, CLIENT_ID, GUILD_ID)
-# 2. Déployer les commandes
-npm run deploy
-
-# 3. Lancer le bot
+# 1. Remplir .env (TOKEN, CLIENT_ID)
+# 2. Lancer le bot — les commandes se déploient automatiquement
 npm run dev
 ```
 
@@ -67,6 +73,8 @@ Au démarrage, la console affiche :
 ✅ DroBen est en ligne !
 🤖 DroBen#1234 — DroBen v1.0.0
 📊 Présent sur X serveur(s)
+📡 Synchronisation des commandes sur X serveur(s)...
+✅ Commandes enregistrées sur « Mon Serveur »
 ```
 
 ## Commandes disponibles

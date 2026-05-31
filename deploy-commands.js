@@ -1,54 +1,29 @@
 require('dotenv').config();
 
-const fs = require('fs');
-const path = require('path');
-const { REST, Routes } = require('discord.js');
-const { logError, logWarn, logInfo } = require('./utils/logger');
+const { logError, logInfo } = require('./utils/logger');
+const { collectCommandDefinitions, deployGuildCommands } = require('./utils/deployCommands');
 
 const { CLIENT_ID, GUILD_ID, TOKEN } = process.env;
 
-if (!TOKEN || !CLIENT_ID || !GUILD_ID) {
-  logError('deploy', new Error('Variables TOKEN, CLIENT_ID et GUILD_ID requises dans .env'));
+if (!TOKEN || !CLIENT_ID) {
+  logError('deploy', new Error('Variables TOKEN et CLIENT_ID requises dans .env'));
   process.exit(1);
 }
 
-const commands = [];
-const commandsPath = path.join(__dirname, 'commands');
-
-/**
- * Parcourt récursivement le dossier commands/ et collecte les définitions slash.
- * @param {string} dir - Chemin du dossier à parcourir
- */
-function collectCommands(dir) {
-  const entries = fs.readdirSync(dir, { withFileTypes: true });
-
-  for (const entry of entries) {
-    const fullPath = path.join(dir, entry.name);
-
-    if (entry.isDirectory()) {
-      collectCommands(fullPath);
-    } else if (entry.name.endsWith('.js')) {
-      const command = require(fullPath);
-
-      if ('data' in command && 'execute' in command) {
-        commands.push(command.data.toJSON());
-      } else {
-        logWarn(`Commande ignorée (structure invalide) : ${fullPath}`);
-      }
-    }
-  }
+if (!GUILD_ID) {
+  logError('deploy', new Error('Variable GUILD_ID requise pour un déploiement manuel (npm run deploy)'));
+  process.exit(1);
 }
 
 try {
-  collectCommands(commandsPath);
+  const commands = collectCommandDefinitions();
 
-  const rest = new REST({ version: '10' }).setToken(TOKEN);
+  if (commands.length === 0) {
+    logError('deploy', new Error('Aucune commande trouvée dans commands/'));
+    process.exit(1);
+  }
 
-  logInfo(`🔄 Déploiement de ${commands.length} commande(s) sur le serveur de dev...`);
-
-  rest
-    .put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: commands })
-    .then(() => logInfo('✅ Commandes slash enregistrées avec succès !'))
+  deployGuildCommands(CLIENT_ID, TOKEN, GUILD_ID)
     .catch((error) => {
       logError('deploy', error);
       process.exit(1);
