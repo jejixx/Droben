@@ -1,5 +1,10 @@
 const { Events } = require('discord.js');
 const config = require('../config');
+const {
+  getCommandCooldownSeconds,
+  consumeCooldown,
+  formatCooldownMessage,
+} = require('../utils/cooldown');
 const { logError } = require('../utils/logger');
 
 module.exports = {
@@ -17,6 +22,16 @@ module.exports = {
     const command = client.commands.get(commandName);
 
     if (!command?.executePrefix) return;
+
+    const cooldownResult = consumeCooldown(
+      message.author.id,
+      commandName,
+      getCommandCooldownSeconds(command),
+    );
+
+    if (!cooldownResult.allowed) {
+      return message.reply(formatCooldownMessage(cooldownResult.remainingSeconds));
+    }
 
     try {
       await command.executePrefix(message, args, client);

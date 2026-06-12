@@ -1,4 +1,9 @@
 const { Events, MessageFlags } = require('discord.js');
+const {
+  getCommandCooldownSeconds,
+  consumeCooldown,
+  formatCooldownMessage,
+} = require('../utils/cooldown');
 const { logError, logWarn, isKnownDiscordError } = require('../utils/logger');
 
 function getInteractionContext(interaction) {
@@ -60,6 +65,19 @@ module.exports = {
     if (!command) {
       logWarn(`Commande slash inconnue : /${interaction.commandName} (${getInteractionContext(interaction)})`);
       return;
+    }
+
+    const cooldownResult = consumeCooldown(
+      interaction.user.id,
+      interaction.commandName,
+      getCommandCooldownSeconds(command),
+    );
+
+    if (!cooldownResult.allowed) {
+      return interaction.reply({
+        content: formatCooldownMessage(cooldownResult.remainingSeconds),
+        flags: MessageFlags.Ephemeral,
+      });
     }
 
     try {
