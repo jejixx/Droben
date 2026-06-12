@@ -32,6 +32,7 @@ INTERNAL_API_SECRET=          # identique à supp-gap (openssl rand -hex 32)
 SUPPGAP_GUILD_ID=             # serveur SUPP GAP (réutilise GUILD_ID si identique)
 PREMIUM_ROLE_ID=              # rôle Premium fixe
 SUBSCRIBER_CATEGORY_ID=       # catégorie des salons vocaux d'abonnés
+NEXTJS_INTERNAL_URL=http://localhost:3000  # app supp-gap (scheduler d'expiration)
 ```
 
 | Variable    | Description |
@@ -44,6 +45,7 @@ SUBSCRIBER_CATEGORY_ID=       # catégorie des salons vocaux d'abonnés
 | `SUPPGAP_GUILD_ID` | ID du serveur où provisionner les perks (défaut : `GUILD_ID`) |
 | `PREMIUM_ROLE_ID` | ID du rôle Premium fixe à attribuer aux abonnés |
 | `SUBSCRIBER_CATEGORY_ID` | ID de la catégorie Discord pour les salons vocaux privés |
+| `NEXTJS_INTERNAL_URL` | URL de supp-gap pour le scheduler d'expiration des passes (défaut `http://127.0.0.1:3000`) |
 
 > **Activer les intents** dans le portail :
 > - **Server Members Intent** (nécessaire pour `/kick`)

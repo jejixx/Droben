@@ -22,4 +22,6 @@ module.exports = {
   PREMIUM_ROLE_ID: process.env.PREMIUM_ROLE_ID || '',
   /** Catégorie des salons vocaux d'abonnés */
   SUBSCRIBER_CATEGORY_ID: process.env.SUBSCRIBER_CATEGORY_ID || '',
+  /** URL de l'app supp-gap (scheduler d'expiration des passes) */
+  NEXTJS_INTERNAL_URL: process.env.NEXTJS_INTERNAL_URL || 'http://127.0.0.1:3000',
 };
