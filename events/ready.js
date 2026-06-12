@@ -1,6 +1,7 @@
 const { Events } = require('discord.js');
 const config = require('../config');
 const { deployToAllGuilds } = require('../utils/deployCommands');
+const { startInternalServer } = require('../server');
 const { logInfo } = require('../utils/logger');
 
 module.exports = {
@@ -13,5 +14,8 @@ module.exports = {
 
     // Synchronise les slash commands sur tous les serveurs existants
     await deployToAllGuilds(client);
+
+    // API HTTP interne pour le provisioning des perks (supp-gap)
+    startInternalServer(client);
   },
 };

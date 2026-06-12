@@ -8,12 +8,17 @@
     "dev": "nodemon index.js",
     "deploy": "node deploy-commands.js"
   },
-  "keywords": ["discord", "bot", "discord.js"],
+  "keywords": [
+    "discord",
+    "bot",
+    "discord.js"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {
     "discord.js": "^14.26.4",
-    "dotenv": "^16.4.7"
+    "dotenv": "^16.4.7",
+    "express": "^5.2.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"

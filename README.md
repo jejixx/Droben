@@ -25,6 +25,13 @@ Copiez ou complétez le fichier `.env` à la racine du projet :
 TOKEN=votre_token_bot
 CLIENT_ID=id_de_l_application
 GUILD_ID=id_du_serveur_de_test
+
+# API interne (supp-gap → DroBen, 127.0.0.1 uniquement)
+INTERNAL_API_PORT=4001
+INTERNAL_API_SECRET=          # identique à supp-gap (openssl rand -hex 32)
+SUPPGAP_GUILD_ID=             # serveur SUPP GAP (réutilise GUILD_ID si identique)
+PREMIUM_ROLE_ID=              # rôle Premium fixe
+SUBSCRIBER_CATEGORY_ID=       # catégorie des salons vocaux d'abonnés
 ```
 
 | Variable    | Description |
@@ -32,6 +39,11 @@ GUILD_ID=id_du_serveur_de_test
 | `TOKEN`     | Token du bot (onglet **Bot** du portail développeur) |
 | `CLIENT_ID` | ID de l'application (onglet **General Information**) |
 | `GUILD_ID`  | ID du serveur pour un déploiement manuel (`npm run deploy`) — optionnel si le bot tourne |
+| `INTERNAL_API_PORT` | Port de l'API HTTP interne (défaut `4001`) |
+| `INTERNAL_API_SECRET` | Secret partagé avec supp-gap (`Authorization: Bearer`) |
+| `SUPPGAP_GUILD_ID` | ID du serveur où provisionner les perks (défaut : `GUILD_ID`) |
+| `PREMIUM_ROLE_ID` | ID du rôle Premium fixe à attribuer aux abonnés |
+| `SUBSCRIBER_CATEGORY_ID` | ID de la catégorie Discord pour les salons vocaux privés |
 
 > **Activer les intents** dans le portail :
 > - **Server Members Intent** (nécessaire pour `/kick`)
